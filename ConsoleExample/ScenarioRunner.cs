@@ -20,17 +20,18 @@ namespace ConsoleExample
                 var selection = Console.ReadLine();
                 uint selectedScenarioIndex;
                 if (uint.TryParse(selection, out selectedScenarioIndex) && selectedScenarioIndex < scenarios.Length)
-                    InvokeScenario(scenarios[selectedScenarioIndex]);
+                    InvokeScenario(scenarios[selectedScenarioIndex]).Wait();
             }
         }
 
-        private static void InvokeScenario(MethodInfo scenario)
+        private static async Task InvokeScenario(MethodInfo scenario)
         {
             Logger.Init(ToNiceName(scenario));
 
             Logger.LogStart(scenario.Name);
             var task = scenario.Invoke(null, null) as Task;
-            task?.Wait();
+            if (task != null)
+                await task;
             Logger.LogEnd(scenario.Name);
         }
 
