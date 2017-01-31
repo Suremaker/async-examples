@@ -1,0 +1,12 @@
+bin
+obj
+*ReSharper*
+*.suo
+*.user
+*.bak
+build/Output
+*.userprefs
+packages
+output
+.vs
+*.lock.json
