@@ -9,7 +9,7 @@ internal static class Methods
     {
         Logger.Log($"start {i}");
 
-        await Task.Delay(100);
+        await Task.Delay(TimeSpan.FromMilliseconds(100));
         Logger.Log($"end {i}");
     }
 
@@ -17,7 +17,7 @@ internal static class Methods
     {
         Logger.LogStart();
 
-        await Task.Delay(200);
+        await Task.Delay(TimeSpan.FromMilliseconds(200));
         Logger.Log("after delay");
 
         await Bar(2);
@@ -75,15 +75,12 @@ internal static class Methods
         throw new InvalidOperationException("some exception");
     }
 
-    /// <summary>
-    /// It would be possible to remove 'async' keyword and make method returning Task.CompletedTask
-    /// </summary>
-    /// <returns></returns>
-    public static async Task LongRunningTaskAsync() 
+    public static Task LongRunningTaskAsync() 
     {
         Logger.LogStart();
         Thread.Sleep(TimeSpan.FromSeconds(1)); //emulate long running task
         Logger.LogEnd();
+        return Task.CompletedTask;
     }
 
     public static async Task YieldAndExecuteLongRunningTaskAsync()

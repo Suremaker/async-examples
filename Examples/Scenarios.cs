@@ -220,7 +220,7 @@ namespace Examples
         /// <summary>
         /// It illustrates why mixing async with synchronous waiting should be avoided
         /// </summary>
-        public static async Task Task_Wait_may_lead_to_severe_performance_issues_or_cause_deadlock()
+        public static void Task_Wait_may_lead_to_severe_performance_issues_or_cause_deadlock()
         {
             Methods.TaskYieldThenWait().Wait();
             Logger.Log("survived");
@@ -252,7 +252,7 @@ namespace Examples
         /// <summary>
         /// It ilustrates that ConfigureAwait() method can be used on tasks to do not capture the synchronization context, which would allow to execute the task continuation on another thread if needed.
         /// </summary>
-        public static async Task ConfigureAwait_example()
+        public static void ConfigureAwait_example()
         {
             Methods.CallBlockingTaskWithConfigureAwait(false).Wait();
             Logger.Log("survived");
