@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Threading;
 
-namespace Helpers
+namespace Exmaples.Helpers
 {
     public class Logger
     {
