@@ -1,6 +1,6 @@
 ﻿using System;
-using Exmaples;
-using Exmaples.Helpers;
+using Examples;
+using Examples.Helpers;
 
 namespace ConsoleExample
 {

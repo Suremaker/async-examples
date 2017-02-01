@@ -3,7 +3,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace Exmaples.Helpers
+namespace Examples.Helpers
 {
     public class ScenarioRunner
     {
@@ -35,6 +35,11 @@ namespace Exmaples.Helpers
         private string ToNiceName()
         {
             return _scenario.Name.Replace('_', ' ');
+        }
+
+        public override string ToString()
+        {
+            return Name;
         }
     }
 }

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Exmaples.Helpers;
+using Examples.Helpers;
 
-namespace Exmaples
+namespace Examples
 {
    public class Scenarios
     {

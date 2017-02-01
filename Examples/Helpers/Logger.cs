@@ -1,9 +1,8 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Threading;
 
-namespace Exmaples.Helpers
+namespace Examples.Helpers
 {
     public class Logger
     {
@@ -17,7 +16,7 @@ namespace Exmaples.Helpers
 
         public static void Log(string message, [CallerMemberName]string caller = null)
         {
-            var text = $"Elapsed: {_watch.ElapsedMilliseconds} ms Thread: {Thread.CurrentThread.ManagedThreadId}> {caller}: {message} (SynchronizationContext: {SynchronizationContext.Current?.ToString() ?? "none"})";
+            var text = $"{_watch.ElapsedMilliseconds}ms Thread {Thread.CurrentThread.ManagedThreadId} (context: {SynchronizationContext.Current?.GetType().Name ?? "none"})> {caller}: {message}";
             WriteText(text);
         }
 
@@ -33,7 +32,6 @@ namespace Exmaples.Helpers
 
         private static void WriteText(string text)
         {
-            Console.WriteLine(text);
             Trace.WriteLine(text);
         }
     }
