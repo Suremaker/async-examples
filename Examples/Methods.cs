@@ -1,60 +1,103 @@
-﻿using System;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Examples.Helpers;
 
-namespace Examples
+internal static class Methods
 {
-    class Methods
+    public static async Task Bar(int i)
     {
-        public static void ThreadSleep(int secs)
-        {
-            Logger.Log($"sleeping {secs}s");
+        Logger.Log($"start {i}");
 
-            Thread.Sleep(TimeSpan.FromSeconds(secs));
+        await Task.Delay(100);
+        Logger.Log($"end {i}");
+    }
 
-            Logger.Log($"finished sleeping {secs}s");
-        }
+    public static async Task Foo()
+    {
+        Logger.LogStart();
 
-        public static async Task TaskDelayAsync(int secs)
-        {
-            Logger.Log($"delaying by {secs}s");
+        await Task.Delay(200);
+        Logger.Log("after delay");
 
-            await Task.Delay(TimeSpan.FromSeconds(secs));
+        await Bar(2);
+        Logger.LogEnd();
+    }
 
-            Logger.Log($"finished delaying by {secs}s");
-        }
+    public static async Task TaskDelayAsync(int secs)
+    {
+        Logger.Log($"delaying by {secs}s");
 
-        public static async Task TaskDelayAndThrowAsync(int secs)
-        {
-            await TaskDelayAsync(secs);
+        await Task.Delay(TimeSpan.FromSeconds(secs));
 
-            throw new InvalidOperationException("some exception");
-        }
+        Logger.Log($"finished delaying by {secs}s");
+    }
 
-        public static async void TaskDelayAndThrowAsyncVoid(int secs)
-        {
-            await TaskDelayAsync(secs);
+    public static async Task<string> TaskDelayThenReturn(int secs, string text)
+    {
+        Logger.Log($"start {text}");
+        await Task.Delay(TimeSpan.FromSeconds(secs));
+        Logger.Log($"finished {text}");
+        return text;
+    }
 
-            throw new InvalidOperationException("some exception");
-        }
+    public static async void TaskDelayAndThrowAsyncVoid(int secs)
+    {
+        await TaskDelayAsync(secs);
 
-        public static async Task<string> TaskWithResult(string text)
-        {
-            await TaskDelayAsync(1);
-            return text;
-        }
+        throw new InvalidOperationException("some exception");
+    }
 
-        public static async Task TaskYieldThenWait()
-        {
-            await Task.Yield();
-            TaskDelayAsync(1).Wait();
-        }
+    public static async Task TaskYieldThenWait()
+    {
+        Logger.LogStart();
+        await Task.Yield();
 
-        public static async Task TaskYieldThenDelay()
-        {
-            await Task.Yield();
-            await TaskDelayAsync(1);
-        }
+        Logger.Log("waiting");
+        Task.Delay(TimeSpan.FromSeconds(5)).Wait();
+        Logger.LogEnd();
+    }
+
+    public static async Task TaskYieldThenDelay()
+    {
+        Logger.LogStart();
+        await Task.Yield();
+
+        Logger.Log("awaiting");
+        await Task.Delay(TimeSpan.FromSeconds(5));
+        Logger.LogEnd();
+    }
+
+    public static async Task TaskDelayAndThrowAsync(int secs)
+    {
+        await TaskDelayAsync(secs);
+
+        throw new InvalidOperationException("some exception");
+    }
+
+    /// <summary>
+    /// It would be possible to remove 'async' keyword and make method returning Task.CompletedTask
+    /// </summary>
+    /// <returns></returns>
+    public static async Task LongRunningTaskAsync() 
+    {
+        Logger.LogStart();
+        Thread.Sleep(TimeSpan.FromSeconds(1)); //emulate long running task
+        Logger.LogEnd();
+    }
+
+    public static async Task YieldAndExecuteLongRunningTaskAsync()
+    {
+        Logger.LogStart();
+        await Task.Yield();
+        Thread.Sleep(TimeSpan.FromSeconds(1)); //emulate long running task
+        Logger.LogEnd();
+    }
+
+    public static async Task CallBlockingTaskWithConfigureAwait(bool continueOnCapturedContext)
+    {
+        Logger.Log($"start with {nameof(continueOnCapturedContext)}={continueOnCapturedContext}");
+        await Task.Delay(TimeSpan.FromSeconds(1)).ConfigureAwait(continueOnCapturedContext);
+        Logger.Log($"end with {nameof(continueOnCapturedContext)}={continueOnCapturedContext}");
     }
 }
