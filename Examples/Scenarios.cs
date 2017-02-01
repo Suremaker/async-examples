@@ -9,6 +9,21 @@ namespace Examples
     public static class Scenarios
     {
         /// <summary>
+        /// It illustrates that while Thread.Sleep() executes on the same thread, the method after Task.Delay() may continue on different one.
+        /// </summary>
+        public static async Task Thread_Sleep_vs_Task_Delay()
+        {
+            Logger.Log("sleeping");
+            Thread.Sleep(TimeSpan.FromSeconds(1));
+            Logger.Log("finished sleeping");
+
+
+            Logger.Log("delaying");
+            await Task.Delay(TimeSpan.FromSeconds(1));
+            Logger.Log("finished delaying");
+        }
+
+        /// <summary>
         /// It ilustrates how async / await breaks method execution on await and returns to parent method. It shows also that between task start and end it is possible to execute other tasks (see foo task).
         /// Finally, depending on the context, all tasks may execute on different threads but do not have to.
         /// </summary>
@@ -24,21 +39,6 @@ namespace Examples
             Logger.Log($"after {nameof(Methods.Bar)}");
 
             await foo;
-        }
-
-        /// <summary>
-        /// It illustrates that while Thread.Sleep() executes on the same thread, the method after Task.Delay() may continue on different one.
-        /// </summary>
-        public static async Task Thread_Sleep_vs_Task_Delay()
-        {
-            Logger.Log("sleeping");
-            Thread.Sleep(TimeSpan.FromSeconds(1));
-            Logger.Log("finished sleeping");
-
-
-            Logger.Log("delaying");
-            await Task.Delay(TimeSpan.FromSeconds(1));
-            Logger.Log("finished delaying");
         }
 
 
